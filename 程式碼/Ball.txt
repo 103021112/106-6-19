@@ -1,0 +1,69 @@
+import java.awt.Graphics;
+import java.awt.Rectangle;
+public class Ball implements Runnable {      //為什麼不用thread? thread是class 當你繼承了這個類別時 就不能繼承其他類別了
+	//但Runnable是一個介面  JAVA可以讓一個implement有多個介面   簡單來說就是讓程式有擴展空間
+	int x,y,xD,yD;
+	int speed = 10 ;
+	
+	Rectangle ball; 
+	
+	public Ball(){
+		x=300;
+		y=300;
+		
+		int xrDirection = (int)(2*Math.random()); // 1/2/3
+		if(xrDirection==0)
+			xrDirection--;
+		XD(xrDirection);
+		
+		int yrDirection = (int)(2*Math.random());
+		if(yrDirection==0)
+			yrDirection--;
+		YD(yrDirection);
+		
+		ball = new Rectangle(x,y,15,15); //弄出小正方體
+	}
+	
+	public void XD(int xd){
+		xD=xd;
+	}
+	public void YD(int yd){
+		yD=yd;
+	}
+	
+	public void movingTheBall(){  //碰到反彈
+		ball.x +=xD;
+		ball.y +=yD;
+		
+		if(ball.x<= 170) //碰到左邊往右
+			XD(+1);
+		if(ball.x>=560)  //碰到右邊往左
+			XD(-1);
+		if(ball.y<= 135){
+			YD(+1); // 碰到上面往下  且加速
+		speed++;
+		}
+		if(ball.y>= 675){
+			YD(-1); //碰到下面往上  且加速
+		speed++;
+		}
+	}
+         
+	public void draw(Graphics g){
+		g.fillRect(ball.x, ball.y, ball.width, ball.height);
+	}
+     
+	public void run(){   // 重新定義run的方法    把想要執行的程式寫在這裡
+		try{   // try,catch是例外處理  判斷球是不是在跑
+			for(;;){  //無限循環的傳送訊息
+				movingTheBall();
+				Thread.sleep(speed); //在指定的毫秒數內暫止目前的執行緒  否則球會亂衝
+			}
+		}
+		catch(Exception e){
+			System.out.println("錯誤");
+		}
+	}
+
+
+}

@@ -1,0 +1,80 @@
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+
+import javax.swing.ImageIcon;
+
+public class P1 implements Runnable {
+	
+	 int x,y,xDirection;
+	 
+	 Image MainP1;
+	 Rectangle P1;
+	 
+	 public P1(){  //圖片初始位置
+		 x = 345;
+		 y = 605;
+		 
+		 P1 = new Rectangle (x,y,50,50);
+		 
+		 ImageIcon MainP1Image = new ImageIcon(""); //讀取圖片檔位置
+		 MainP1 = MainP1Image.getImage();
+	 }
+	 
+	 public void keyPressed(KeyEvent e){  //用於接收鍵盤事件的抽象適配器類。這個類中的方法是空的。此類作為創建偵聽器對象的方便而存在。
+		 //擴展此類以創建KeyEvent偵聽器並覆蓋感興趣的事件的方法。（如果你實現了這個 KeyListener接口，你必須定義所有的方法，這個抽像類為它們定
+		 //義了null方法，所以你只需要定義你關心的事件的方法。）
+
+		 if(e.getKeyCode()==e.VK_LEFT){  //左鍵向左
+			 XDirection(-1);
+		 }
+		 if(e.getKeyCode()==e.VK_RIGHT){  //右鍵向右
+			 XDirection(+1);
+		 }
+	 }
+	 
+	 public void keyReleased(KeyEvent e){  //keyPressed() 為按下鍵盤的動作， keyReleased() 為釋放鍵盤的動作
+		 if(e.getKeyCode()==e.VK_LEFT){
+			 XDirection(0);
+		 }
+		 if(e.getKeyCode()==e.VK_RIGHT){
+			 XDirection(0);
+		 }
+	 }
+	 
+	 public void draw(Graphics g){  //繪出圖像
+		 g.fillRect(P1.x,P1.y ,P1.width, P1.height);
+		 g.drawImage(MainP1,x,y,null);
+	 }
+	 
+	 public void move(){   //圖片能移動的邊界
+		P1.x += xDirection;
+		 x += xDirection;
+		 if(P1.x <= 170)
+			 P1.x = 170;
+		 if(P1.x>=525)
+			 P1.x =525;
+		 if(x <= 170)
+			 x = 170;
+		 if(x>=525)
+			 x =525;
+	 }
+	 
+	 
+	 public void XDirection(int xdirection){
+		 xDirection = xdirection;
+	 }
+	
+      public void run(){
+    	  try{
+    		  for(;;){
+    			  move();
+    			  Thread.sleep(3); //延遲控制  數字越高越慢
+    		  }
+    		   		  
+    	  }catch(Exception e){
+    		  System.out.println("Error");
+    	  }
+      }
+}

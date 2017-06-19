@@ -1,0 +1,78 @@
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+
+import javax.swing.ImageIcon;
+
+public class P2 implements Runnable {
+	
+	 int x2,y2,yDirection;
+	 
+	 Image MainP2;
+	 Rectangle P2;
+	 
+	 public P2(){  
+		 x2 = 345;
+		 y2 = 175;
+		 
+		 P2 = new Rectangle (x2,y2,50,50);
+		 
+		 ImageIcon MainP2Image = new ImageIcon("E:\\z\\aa.jpg"); 
+		 MainP2 = MainP2Image.getImage();
+	 }
+	 
+	 public void keyPressed(KeyEvent e){  
+
+		 if(e.getKeyCode()==e.VK_A){  
+			 YDirection(-1);
+		 }
+		 if(e.getKeyCode()==e.VK_D){  
+			 YDirection(+1);
+		 }
+	 }
+	 
+	 public void keyReleased(KeyEvent e){  
+		 if(e.getKeyCode()==e.VK_A){
+			 YDirection(0);
+		 }
+		 if(e.getKeyCode()==e.VK_D){
+			 YDirection(0);
+		 }
+	 }
+	 
+	 public void draw(Graphics g){  
+		 g.fillRect(P2.x,P2.y ,P2.width, P2.height);
+		 g.drawImage(MainP2,x2,y2,null);
+	 }
+	 
+	 public void move(){   
+		P2.x += yDirection;
+		 x2 += yDirection;
+		 if(P2.x <= 170)
+			 P2.x = 170;
+		 if(P2.x>=525)
+			 P2.x =525;
+		 if(x2 <= 170)
+			 x2 = 170;
+		 if(x2>=525)
+			 x2 =525;
+	 }
+	 
+	 
+	 public void YDirection(int ydirection){
+		 yDirection = ydirection;
+	 }
+	
+      public void run(){
+    	  try{
+    		  for(;;){
+    			  move();
+    			  Thread.sleep(3); 
+    		  }
+    		   		  
+    	  }catch(Exception e){
+    		  System.out.println("¿ù»~");
+    	  }
+      }
+}
